@@ -5,7 +5,11 @@ export function TrackingPage() {
   return (
     <>
       <title>Tracking</title>
-
+      <link
+        rel="icon"
+        type="image/svg+xml"
+        href="images/favicon/tracking-favicon.png"
+      />
       <Header />
 
       <div className="tracking-page">
