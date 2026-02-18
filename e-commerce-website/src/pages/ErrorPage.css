@@ -1,0 +1,29 @@
+.error-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.error-page .heading {
+    font-size: 90px;
+}
+.error-page .sub-heading {
+    font-size: 30px;
+}
+.error-page .description {
+    font-size: 14px;
+    margin: 10px;
+    width: 500px;
+    text-align: center;
+}
+.error-page .homepage-button {
+    background-color: rgb(20, 109, 66);
+    color: white;
+    border: none;
+    height: 40px;
+    width: 200px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: 20px;
+}
