@@ -1,9 +1,11 @@
 import "./ErrorPage.css";
 import { Link } from "react-router";
+import { Header } from "../components/Header";
 
-export function ErrorPage() {
+export function ErrorPage({ cart }) {
   return (
     <>
+      <Header cart={cart} />
       <div className="error-page">
         <div className="heading">404</div>
         <div className="sub-heading">Oops! This page was not found.</div>
