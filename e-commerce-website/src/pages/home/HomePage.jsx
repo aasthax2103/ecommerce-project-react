@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import "./HomePage.css";
 
-export function HomePage({ cart, loadCart }) {
+export function HomePage({ cart, addToCart }) {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,11 @@ export function HomePage({ cart, loadCart }) {
         <div className="products-grid">
           {products.map((product) => {
             return (
-              <Product key={product.id} product={product} loadCart={loadCart} />
+              <Product
+                key={product.id}
+                product={product}
+                addToCart={addToCart}
+              />
             );
           })}
         </div>

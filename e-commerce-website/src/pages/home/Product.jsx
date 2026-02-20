@@ -1,22 +1,17 @@
-import axios from "axios";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/money";
 import CheckmarkIcon from "../../assets/images/icons/checkmark.png";
 
-export function Product({ product, loadCart }) {
+export function Product({ product, addToCart }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  const addToCart = async (product) => {
-    await axios.post("/api/cart-items", {
-      productId: product.id,
-      quantity,
-    });
+  const handleAddToCart = async () => {
+    await addToCart(product.id, quantity);
     setAdded(true);
     setTimeout(() => {
       setAdded(false);
     }, 2000);
-    await loadCart();
   };
 
   const selectQuantity = (event) => {
@@ -67,7 +62,7 @@ export function Product({ product, loadCart }) {
 
       <button
         className="add-to-cart-button button-primary"
-        onClick={() => addToCart(product)}
+        onClick={handleAddToCart}
       >
         Add to Cart
       </button>
