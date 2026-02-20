@@ -106,6 +106,15 @@ export function CheckoutPage({ cart, loadCart }) {
                                   onChange={(e) =>
                                     setTempQuantity(Number(e.target.value))
                                   }
+                                  onKeyDown={async (e) => {
+                                    if (e.key === "Enter") {
+                                      await updateQuantity(
+                                        cartItem,
+                                        tempQuantity,
+                                      );
+                                      setEditingItemId(null);
+                                    }
+                                  }}
                                   className="update-quantity"
                                 />
                                 <span
