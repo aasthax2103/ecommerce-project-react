@@ -209,3 +209,13 @@
   margin-top: 20px;
   margin-bottom: 19px;
 }
+
+.checkout-page .modify-order {
+  margin-left: 10px;
+  color: rgb(25, 135, 84);
+  cursor: pointer;
+}
+
+.checkout-page .update-quantity {
+  width: 50px;
+}

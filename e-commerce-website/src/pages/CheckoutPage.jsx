@@ -34,6 +34,17 @@ export function CheckoutPage({ cart, loadCart }) {
     await loadCart();
   };
 
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [tempQuantity, setTempQuantity] = useState(1);
+
+  const updateQuantity = async (cartItem, newQuantity) => {
+    await axios.put(`/api/cart-items/${cartItem.productId}`, {
+      quantity: newQuantity,
+    });
+
+    await loadCart();
+  };
+
   return (
     <>
       <title>Checkout</title>
@@ -76,23 +87,61 @@ export function CheckoutPage({ cart, loadCart }) {
                           )}
                         </div>
                         <div className="product-quantity">
-                          <span>
-                            Quantity:{" "}
-                            <span className="quantity-label">
-                              {cartItem.quantity}
-                            </span>
-                          </span>
-                          <span className="update-quantity-link link-primary">
-                            Update
-                          </span>
-                          <span
-                            className="delete-quantity-link link-primary"
-                            onClick={() => {
-                              deleteCartItem(cartItem);
-                            }}
-                          >
-                            Delete
-                          </span>
+                          {editingItemId === cartItem.productId ? (
+                            <div className="quantity-after-updation">
+                              <p>
+                                Quantity:{" "}
+                                <input
+                                  type="number"
+                                  min="1"
+                                  value={tempQuantity}
+                                  onChange={(e) =>
+                                    setTempQuantity(Number(e.target.value))
+                                  }
+                                  className="update-quantity"
+                                />
+                                <span
+                                  className="modify-order"
+                                  onClick={async () => {
+                                    await updateQuantity(
+                                      cartItem,
+                                      tempQuantity,
+                                    );
+                                    setEditingItemId(null);
+                                  }}
+                                >
+                                  Save
+                                </span>
+                                <span
+                                  className="modify-order"
+                                  onClick={() => deleteCartItem(cartItem)}
+                                >
+                                  Delete
+                                </span>
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="quantity-without-updation">
+                              <p>
+                                Quantity: {cartItem.quantity}{" "}
+                                <span
+                                  className="modify-order"
+                                  onClick={() => {
+                                    setEditingItemId(cartItem.productId);
+                                    setTempQuantity(cartItem.quantity);
+                                  }}
+                                >
+                                  Update
+                                </span>
+                                <span
+                                  className="modify-order"
+                                  onClick={() => deleteCartItem(cartItem)}
+                                >
+                                  Delete
+                                </span>
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
