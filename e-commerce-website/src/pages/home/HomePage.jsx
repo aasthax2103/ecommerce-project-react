@@ -18,11 +18,6 @@ export function HomePage({ cart, loadCart }) {
   return (
     <>
       <title>Ecommerce Project</title>
-      <link
-        rel="icon"
-        type="image/svg+xml"
-        href="images/favicon/home-favicon.png"
-      />
       <Header cart={cart} />
 
       <div className="home-page">

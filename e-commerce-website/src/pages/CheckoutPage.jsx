@@ -5,31 +5,33 @@ import { CheckoutHeader } from "../components/CheckoutHeader";
 import { formatCurrency } from "../utils/money.js";
 import "./CheckoutPage.css";
 
-export function CheckoutPage({ cart }) {
+export function CheckoutPage({ cart, loadCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
 
   useEffect(() => {
-    const fetchCheckoutData = async () => {
-      let response = await axios.get(
+    const fetchDeliveryOptions = async () => {
+      const response = await axios.get(
         "/api/delivery-options?expand=estimatedDeliveryTime",
       );
       setDeliveryOptions(response.data);
+    };
+    fetchDeliveryOptions();
+  }, []);
 
-      response = await axios.get("/api/payment-summary");
+  useEffect(() => {
+    const fetchPaymentSummary = async () => {
+      const response = await axios.get("/api/payment-summary");
       setPaymentSummary(response.data);
     };
-    fetchCheckoutData();
-  }, []);
+    if (cart.length > 0) {
+      fetchPaymentSummary();
+    }
+  }, [cart]);
 
   return (
     <>
       <title>Checkout</title>
-      <link
-        rel="icon"
-        type="image/svg+xml"
-        href="images/favicon/cart-favicon.png"
-      />
       <CheckoutHeader cart={cart} />
 
       <div className="checkout-page">
@@ -98,10 +100,21 @@ export function CheckoutPage({ cart }) {
                             )} - Shipping`;
                           }
 
+                          const updateDeliveryOption = async () => {
+                            await axios.put(
+                              `/api/cart-items/${cartItem.productId}`,
+                              {
+                                deliveryOptionId: deliveryOption.id,
+                              },
+                            );
+                            await loadCart();
+                          };
+
                           return (
                             <div
                               key={deliveryOption.id}
                               className="delivery-option"
+                              onClick={updateDeliveryOption}
                             >
                               <input
                                 type="radio"
@@ -109,6 +122,7 @@ export function CheckoutPage({ cart }) {
                                   deliveryOption.id ===
                                   cartItem.deliveryOptionId
                                 }
+                                onChange={() => {}}
                                 className="delivery-option-input"
                                 name={`delivery-option-${cartItem.productId}`}
                               />
