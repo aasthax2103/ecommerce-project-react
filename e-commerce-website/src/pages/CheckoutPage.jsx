@@ -1,5 +1,6 @@
 import axios from "axios";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { CheckoutHeader } from "../components/CheckoutHeader";
 import { formatCurrency } from "../utils/money.js";
@@ -8,6 +9,8 @@ import "./CheckoutPage.css";
 export function CheckoutPage({ cart, loadCart }) {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [tempQuantity, setTempQuantity] = useState(1);
 
   useEffect(() => {
     const fetchDeliveryOptions = async () => {
@@ -34,15 +37,20 @@ export function CheckoutPage({ cart, loadCart }) {
     await loadCart();
   };
 
-  const [editingItemId, setEditingItemId] = useState(null);
-  const [tempQuantity, setTempQuantity] = useState(1);
-
   const updateQuantity = async (cartItem, newQuantity) => {
     await axios.put(`/api/cart-items/${cartItem.productId}`, {
       quantity: newQuantity,
     });
 
     await loadCart();
+  };
+
+  const navigate = useNavigate();
+
+  const createOrder = async () => {
+    await axios.post("/api/orders");
+    await loadCart();
+    navigate("/orders");
   };
 
   return (
@@ -244,7 +252,10 @@ export function CheckoutPage({ cart, loadCart }) {
                   </div>
                 </div>
 
-                <button className="place-order-button button-primary">
+                <button
+                  className="place-order-button button-primary"
+                  onClick={createOrder}
+                >
                   Place your order
                 </button>
               </>
